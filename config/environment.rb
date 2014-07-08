@@ -48,7 +48,7 @@ require APP_ROOT.join('config', 'database')
 also_reload 'app/models/*' if development?
 
 
-env_config = YAML.load_file(APP_ROOT.join('config', 'twitter.yaml'))
+env_config = YAML.load_file(APP_ROOT.join('yaml', 'twitter.yaml'))
 
 env_config.each do |key, value|
   ENV[key] = value
