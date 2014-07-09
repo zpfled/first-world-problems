@@ -47,18 +47,12 @@ Dir[APP_ROOT.join('app', 'helpers', '*.rb')].each { |file| require file }
 # Set up the database and models
 require APP_ROOT.join('config', 'database')
 
-also_reload 'app/models/*' if development?
+if development?
+  also_reload 'app/models/*'
 
+  env_config = YAML.load_file(APP_ROOT.join('config', 'twitter.yaml'))
 
-# env_config = YAML.load_file(APP_ROOT.join('config', 'twitter.yaml'))
-
-# env_config.each do |key, value|
-#   ENV[key] = value
-# end
-
-# $client = Twitter::REST::Client.new do |config|
-#   config.consumer_key        = ENV['CONSUMER_KEY']
-#   config.consumer_secret     = ENV['CONSUMER_SECRET']
-#   config.access_token        = ENV['ACCESS_TOKEN']
-#   config.access_token_secret = ENV['ACCESS_TOKEN_SECRET']
-# end
+  env_config.each do |key, value|
+    ENV[key] = value
+  end
+end
