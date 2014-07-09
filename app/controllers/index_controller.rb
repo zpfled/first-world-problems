@@ -1,7 +1,7 @@
 require_relative '../models/twerker'
 
 get '/' do
-  # load_new_tweets('#firstworldproblems')
+  load_new_tweets('#firstworldproblems')
   erb :index
   # redirect '/problems'
 end
