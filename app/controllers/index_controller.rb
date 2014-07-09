@@ -1,7 +1,7 @@
 require_relative '../models/twerker'
 
 get '/' do
-  load_new_tweets('#firstworldproblems')
+  # load_new_tweets('#firstworldproblems')
   erb :index
   # redirect '/problems'
 end
@@ -22,13 +22,13 @@ end
 def jsonify_tweets
   tweets_hash = {}
   @tweets.each do |tweet|
-    tweets_hash["#{tweet.id}"] = {
+    tweets_hash["#{tweet.id - 1}"] = {
+      full_text: tweet.full_text,
       handle: (tweet.handle == "" ? "someone" : tweet.handle),
       latitude: tweet.latitude,
-      longitude: tweet.longitude,
-      full_text: tweet.full_text
+      longitude: tweet.longitude
     }
   end
-  tweets_hash["count"] = @tweets.length
+  tweets_hash["length"] = @tweets.length
   tweets_hash.to_json
 end

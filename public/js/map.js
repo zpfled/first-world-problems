@@ -1,5 +1,28 @@
-$(document).ready(function() {
-    var counter, tweet, marker;
+var MAP_IMAGE_LAYER_PATTERN = 'http://{s}.tiles.mapbox.com/v3/zpfled.inakeg99/{z}/{x}/{y}.png';
+// var ArrayForEach = [].forEach;
+var ArrayMap = [].map;
+// var tweetObjects = [];
+
+function Tweet(full_text, handle, latitude, longitude, id) {
+    this.id = id;
+    this.handle = handle;
+    this.full_text = full_text;
+    this.latitude = latitude;
+    this.longitude = longitude;
+}
+
+// Tweet.prototype.display = function() {
+//     L.circle([this.latitude, this.longitude], 10000, {
+//         color: '#484',
+//         fillColor: '#7b7',
+//         fillOpacity: 0.5
+//     }).addTo(map)
+//         .bindPopup(this.handle + " said:" + this.full_text)
+//         .openPopup();
+// };
+
+$(document).ready(function () {
+    var counter;
     var map = L.map('map', {
         center: [41.84, -87.65],
         zoom: 5,
@@ -7,47 +30,38 @@ $(document).ready(function() {
         // zoomControl: false
     });
 
-    L.tileLayer('http://{s}.tiles.mapbox.com/v3/zpfled.inakeg99/{z}/{x}/{y}.png', {
-        // attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+    L.tileLayer(MAP_IMAGE_LAYER_PATTERN, {
         maxZoom: 18,
     }).addTo(map);
 
+    function errorMessage(data) {
+        console.log('error');
+    }
 
     $('.problems').on('click', function(event) {
         event.preventDefault();
+        $.get('/problems', cycleTweets, 'json').fail(errorMessage);
+    });
 
-        $.ajax({
-            url: '/problems',
-            method: 'GET',
-            type: 'json',
-            success: function(data) {
-                console.log('success');
-                console.log(data);
-                cycleTweets(data)
-            },
-            error: function(data) {
-                console.log('error');
-                console.log(data);
-            }
-        })
-    })
-
-    function cycleTweets(data) {
-        console.log('cycling them tweets...starting at #' + data['count']);
-        for (counter = 1; counter < data['count']; counter++) {
-            addMarker(data[counter], counter);
-        }
+    function cycleTweets(tweets) {
+        console.log('cycling them tweets...starting at #' + tweets.length);
+        ArrayMap.call(tweets, createTweetObject);
     }
 
-    function addMarker(tweet, idNumber) {
-        console.log(tweet)
-        idNumber = L.circle([tweet['latitude'], tweet['longitude']], 10000, {
+    function createTweetObject(tweet, index) {
+        aTweet = new Tweet(tweet.full_text, tweet.handle, tweet.latitude , tweet.longitude, index);
+        display(aTweet);
+    }
+
+
+    function display(tweet) {
+        L.circle([tweet.latitude, tweet.longitude], 10000, {
             color: '#484',
             fillColor: '#7b7',
             fillOpacity: 0.5
         }).addTo(map)
-            .bindPopup(tweet["handle"] + " said:\n" + tweet['full_text'])
-            .openPopup();;
+            .bindPopup(tweet.handle + " said:" + tweet.full_text)
+            .openPopup();
     }
 
 });
