@@ -1,39 +1,35 @@
+require_relative '../models/twerker'
+
 get '/' do
-  load_tweets
+  load_new_tweets('#firstworldproblems')
   erb :index
+  # redirect '/problems'
 end
 
 get '/problems' do
-  @tweets = Tweet.all
+  redirect '/' unless request.xhr?
+  @tweets = Tweet.limit(100).offset(params['count'].to_i)
+  p jsonify_tweets
   content_type "application/json"
-  halt 200, jsonify(@tweets).to_json
+  halt 200, jsonify_tweets
 end
 
 # Helpers
 
-def load_tweets
-  $client.search("#firstworldproblems", :result_type => "recent").collect do |tweet|
-    next unless tweet.geo?
-    next if Tweet.find_by_full_text(tweet.full_text)
-    Tweet.create({
-      full_text: tweet.full_text,
-      latitude: tweet.geo.coordinates[0],
-      longitude: tweet.geo.coordinates[1],
-      tweeted_on: tweet.created_at
-    })
-  end
+def load_new_tweets(hashtag)
+  Twerker.perform_async(hashtag)
 end
 
-def jsonify(tweets)
+def jsonify_tweets
   tweets_hash = {}
-  json_tweets = "{ count: #{tweets.length},"
-  tweets.each do |tweet|
-    tweets_hash["#{tweet.id}"] = {
+  @tweets.each do |tweet|
+    tweets_hash["#{tweet.id - 1}"] = {
+      full_text: tweet.full_text,
+      handle: (tweet.handle == "" ? "someone" : tweet.handle),
       latitude: tweet.latitude,
-      longitude: tweet.longitude,
-      full_text: tweet.full_text
+      longitude: tweet.longitude
     }
   end
-  tweets_hash["count"] = tweets.length
-  tweets_hash
+  tweets_hash["length"] = @tweets.length
+  tweets_hash.to_json
 end
