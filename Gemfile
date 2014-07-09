@@ -8,6 +8,8 @@ gem 'pg'
 gem 'sinatra'
 gem 'sinatra-contrib'
 gem 'twitter'
+gem 'sidekiq', '~> 2.17.0'
+gem 'redis'
 
 # Use Thin for our web server
 gem 'thin'
