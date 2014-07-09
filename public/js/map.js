@@ -3,7 +3,7 @@ $(document).ready(function() {
     var map = L.map('map', {
         center: [41.84, -87.65],
         zoom: 5,
-        scrollWheelZoom: false
+        scrollWheelZoom: true
         // zoomControl: false
     });
 
@@ -46,7 +46,7 @@ $(document).ready(function() {
             fillColor: '#7b7',
             fillOpacity: 0.5
         }).addTo(map)
-            .bindPopup(tweet['full_text'])
+            .bindPopup(tweet["handle"] + " said:\n" + tweet['full_text'])
             .openPopup();;
     }
 
