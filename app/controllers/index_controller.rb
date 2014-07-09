@@ -24,18 +24,14 @@ def load_tweets
   end
 end
 
-# def consolidate_tweets(tweets)
-#   consolidated_tweets = []
-#   consolidated_tweets << tweets.select { |tweet| tweet.latitude }
-# end
-
 def jsonify(tweets)
   tweets_hash = {}
   json_tweets = "{ count: #{tweets.length},"
   tweets.each do |tweet|
     tweets_hash["#{tweet.id}"] = {
       latitude: tweet.latitude,
-      longitude: tweet.longitude
+      longitude: tweet.longitude,
+      full_text: tweet.full_text
     }
   end
   tweets_hash["count"] = tweets.length

@@ -1,7 +1,26 @@
+/*
+Button ====================================
+*/
 
+.btn-problems {
+  background-color: #00B800;
+  border-radius: .5em;
+  border: 2px solid #009300;
+  padding: 1em 2em;
 
+  color: #eee;
 
+  position: absolute;
+  z-index: 9;
+  bottom: 5%;
+  right: 2%;
+}
 
+.btn-problems:hover,
+.btn-problems:focus {
+  background-color: #009300;
+  border: 2px solid #008100;
+}
 
 
 /*
@@ -14,6 +33,10 @@ Map =======================================
   width: 100%;
 }
 
+.leaflet-control-container {
+  position: absolute;
+  bottom: 10%;
+}
 
 /*
 Header =======================================
@@ -30,18 +53,18 @@ header, footer {
   height: 10%;
   width: 100%;
 }
-
+/*
 .brand {
   border-radius: 100%;
   border: 1px solid #eee;
-}
+}*/
 
-.brand:hover,
+/*.brand:hover,
 .brand:active,
 .brand:focus {
   border: 1px solid #eee;
   background-color: #fff;
-}
+}*/
 
 
 .title {
