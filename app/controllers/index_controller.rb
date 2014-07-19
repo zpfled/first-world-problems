@@ -8,7 +8,8 @@ end
 
 get '/problems' do
   redirect '/' unless request.xhr?
-  @tweets = Tweet.all
+  @tweets = Tweet.limit(100).offset(params['count'].to_i)
+  p jsonify_tweets
   content_type "application/json"
   halt 200, jsonify_tweets
 end

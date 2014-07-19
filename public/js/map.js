@@ -11,17 +11,37 @@ function Tweet(full_text, handle, latitude, longitude, id) {
     this.longitude = longitude;
 }
 
-// Tweet.prototype.display = function() {
-//     L.circle([this.latitude, this.longitude], 10000, {
-//         color: '#484',
-//         fillColor: '#7b7',
-//         fillOpacity: 0.5
-//     }).addTo(map)
-//         .bindPopup(this.handle + " said:" + this.full_text)
-//         .openPopup();
-// };
+var tweetArray = [];
+var lastTweet;
 
 $(document).ready(function () {
+
+    getTweetsFromServer();
+    var load = setInterval(getTweetsFromServer, 1000);
+
+    function getTweetsFromServer(){
+        console.log('number of tweets:' + tweetArray.length)
+        $.ajax({
+            type: 'get',
+            url: '/problems',
+            dataType: 'json',
+            data: {
+                count: (tweetArray.length += 100)
+            },
+            success: function(data){
+                console.log(data['length']);
+                killIfNoNewTweets(data);
+                cycleTweets(data);
+            }
+        })
+    }
+
+    function killIfNoNewTweets(data) {
+        if (data['length'] === 0) {
+            clearInterval(load);
+        }
+    }
+
     var counter;
     var map = L.map('map', {
         center: [41.84, -87.65],
@@ -38,30 +58,35 @@ $(document).ready(function () {
         console.log('error');
     }
 
-    $('.problems').on('click', function(event) {
-        event.preventDefault();
-        $.get('/problems', cycleTweets, 'json').fail(errorMessage);
-    });
+    // $('.problems').on('click', function(event) {
+    //     event.preventDefault();
+    //     getTweetsFromServer();
+    // });
 
     function cycleTweets(tweets) {
+        console.log('cycleTweets ' + tweets);
         console.log('cycling them tweets...starting at #' + tweets.length);
-        ArrayMap.call(tweets, createTweetObject);
+        for (key in tweets) {
+            createTweetObject(tweets[key], key);
+        }
     }
 
     function createTweetObject(tweet, index) {
+        console.log('createTweetObject ' + tweet);
         aTweet = new Tweet(tweet.full_text, tweet.handle, tweet.latitude , tweet.longitude, index);
         display(aTweet);
+        tweetArray.push(aTweet);
     }
 
 
     function display(tweet) {
+        console.log('display ' + tweet);
         L.circle([tweet.latitude, tweet.longitude], 10000, {
             color: '#484',
             fillColor: '#7b7',
             fillOpacity: 0.5
         }).addTo(map)
-            .bindPopup(tweet.handle + " said:" + tweet.full_text)
-            .openPopup();
+            .bindPopup(tweet.handle + " said:" + tweet.full_text);
     }
 
 });
