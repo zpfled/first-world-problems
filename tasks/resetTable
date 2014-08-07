@@ -1,0 +1,5 @@
+#!/bin/bash
+
+psql first-world-problems -c "DROP TABLE tweets"
+
+psql first-world-problems -c "$(node ./tasks/createTable.js)"
