@@ -15,6 +15,3 @@
 /log/*.log
 /tmp
 
-tasks/keys
-keys
-keys.js
