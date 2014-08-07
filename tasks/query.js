@@ -1,7 +1,7 @@
 // Function that connects to and queries the database with the sql statement passed to it
 
 var pg = require('pg');
-var conString = (process.env.DATABASE_URL || "postgres://zpfled@localhost/hashtaggregator");
+var conString = (process.env.DATABASE_URL || "postgres://zpfled@localhost/first-world-problems");
 console.log(process.env.DATABASE_URL);
 
 module.exports = function(sql, cb) {

@@ -52,14 +52,14 @@ io.sockets.on('connection', function(client) {
     console.log('client connected...');
 
     // on connection, get all tweets from db
-    // getAllTweetsFromDB(null, function(err, results) {
-        // if(err) return console.error(err);
-        // console.log('getting all tweets from db...');
-        // initialTweets = results;
-        // filterByHashtag(hashtag, results, function(err, filteredResults) {
-            // initialTweets = filteredResults;
-        // })
-    // });
+    getAllTweetsFromDB(null, function(err, results) {
+        if(err) return console.error(err);
+        console.log('getting all tweets from db...');
+        initialTweets = results;
+        filterByHashtag(hashtag, results, function(err, filteredResults) {
+            initialTweets = filteredResults;
+        });
+    });
 
     getLastTweetID(function(err, id) {
         if (err) return console.error(err);
@@ -70,7 +70,7 @@ io.sockets.on('connection', function(client) {
     client.on('ready', function() {
         console.log('client ready...');
         // stream initial tweets to client
-        // streamTweetsToClient(initialTweets, client, TWEET_SENDING_DELAY);
+        streamTweetsToClient(initialTweets, client, TWEET_SENDING_DELAY);
     });
 
     // periodically check db for new tweets
@@ -92,30 +92,9 @@ io.sockets.on('connection', function(client) {
                 client.emit('lastTweet', lastTweetID);
             });
         });
-    });
-
-    client.on('newStream', function(newHashtag) {
         client.emit('changeColor');
-        messenger.emit('destroy');
-
-        console.log(newHashtag === '');
-        hashtag = (newHashtag === '' ? require('./stream/hashtag') : newHashtag);
-        if (hashtag[0] === '#') {
-            stream = require('./stream/twitterStreamToDatabase')(hashtag);
-        } else {
-            stream = require('./stream/twitterStreamToDatabase')('#' + hashtag);
-        }
-
-        getAllTweetsFromDB(null, function(err, results) {
-            if(err) return console.error(err);
-            console.log('getting all tweets from db...')
-            filterByHashtag(hashtag, results, function(err, filteredResults) {
-                initialTweets = filteredResults;
-                streamTweetsToClient(initialTweets, client, TWEET_SENDING_DELAY);
-            })
-        })
-    })
-})
+    });
+});
 
 
 /// catch 404 and forward to error handler

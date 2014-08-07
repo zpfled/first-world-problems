@@ -7,16 +7,16 @@ module.exports = function(hashtag, tweets, cb) {
       filteredTweets.push(tweet);
     }
     cb(null, filteredTweets);
-  })
-}
+  });
+};
 
 // TESTED =================================
 
 if(process.argv[1] === __filename) {
-  var hashtag = '#sdcc';
+  var hashtag = '#firstworldproblems';
   var tweets = [{
-      username: 'matt',
-      content: 'wat #sdcc'
+      username: 'dave',
+      content: 'I have a lot of #firstworldproblems'
     },
     {
       username: 'zach',
@@ -25,7 +25,7 @@ if(process.argv[1] === __filename) {
 
   module.exports(hashtag, tweets, function(err, data) {
       if(err) return console.error(err);
-      console.log(data[0].username === 'matt');
+      console.log(data[0].username === 'dave');
       process.reallyExit();
-  })
+  });
 }

@@ -12,7 +12,6 @@ app.controller(
 );
 
 $(document).ready(function () {
-  var counter = 0;
   var socket = window.socket;
 
   resetMap();
@@ -20,13 +19,10 @@ $(document).ready(function () {
 
   socket.on('sendTweets', function(data) {
     processTweet(data);
-    // console.log("streaming tweet #" + counter + "...")
-    counter++;
   });
 
   socket.on('lastTweet', function(id) {
     var lastTweetID = id;
-    // console.log('LAST TWEET: ' + lastTweetID)
   });
 
   socket.on('changeColor', function() {
@@ -42,13 +38,4 @@ $(document).ready(function () {
   function askForNewTweets() {
     socket.emit('moarTweets', lastTweetID);
   }
-
-  // change hashtag stream
-  $('#change-hashtag-form').on('submit', function(event) {
-    event.preventDefault();
-    var hashtag = event.target[0].value;
-    resetMap();
-    socket.emit('newStream', hashtag);
-    $('.hashtag-form-modal').fadeToggle(200);
-  });
 });

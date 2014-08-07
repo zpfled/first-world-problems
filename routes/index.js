@@ -6,8 +6,8 @@ var placeholder = require('../stream/hashtag');
  // GET home page.
 router.get('/', function(req, res) {
   res.render('index', {
-    title: 'Hashtaggregator'
-  })
-})
+    title: '#firstWorldProblems'
+  });
+});
 
 module.exports = router;
