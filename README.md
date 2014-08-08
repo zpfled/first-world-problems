@@ -7,7 +7,7 @@ A Node.js app that streams tweets hashtagged with #firstWorldProblems onto a Lea
 - capture a stream of tweets from twitter
 - save tweets
 - display tweets on a map
-- use Angular-powered search to find spefic tweets and zoom in on location
+- use Angular-powered search to find specific tweets and zoom in on location
 
 ##learning objectives:
 - Use Twitter Streaming API to collect all the tweets by hashtag
