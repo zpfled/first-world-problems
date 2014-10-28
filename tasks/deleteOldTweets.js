@@ -2,15 +2,17 @@
 
 var dbQuery = require('./query');
 var sql = require('sql');
-var getLastTweetID = require('./getLastTweetID')
+var getLastTweetID = require('./getLastTweetID');
 var geoTweets;
+var now = Date.now();
+var shelfLife = require('./tweetShelfLife');
 
 module.exports = function(err, lastTweetID, cb) {
   if(err) return cb(err);
 
   var query = {
-    text: 'SELECT * FROM "tweets" WHERE "tweets".id > $1',
-    values: [ lastTweetID ]
+    text: 'DELETE FROM "tweets" WHERE $1 - "tweets".created_at > $2',
+    values: [ now, shelfLife ]
   };
 
   var results = dbQuery(query, function(err, data) {

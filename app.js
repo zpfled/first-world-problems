@@ -56,7 +56,6 @@ io.sockets.on('connection', function(client) {
         if(err) return console.error(err);
         console.log('getting all tweets from db...');
         initialTweets = results;
-        console.log('last tweet to send: ' + initialTweets[initialTweets.length - 1].content);
         filterByHashtag(hashtag, results, function(err, filteredResults) {
             initialTweets = filteredResults;
         });
