@@ -1,11 +1,11 @@
 // turn tweet json from stream into a js object in the format we want
 
-updateTweet = require('./updateTweet')
+updateTweet = require('./updateTweet');
 
 module.exports = function(tweet, cb) {
-  var newTweetObject = {};
+  var dbTweet = {};
   if (tweet.retweeted_status) {
-    console.log('updating a tweet...')
+    console.log('updating a tweet...');
     var finderID = tweet.retweeted_status.id_str;
     var retweets = tweet.retweeted_status.retweet_count;
     var favorites = tweet.retweeted_status.favorite_count;
@@ -14,26 +14,28 @@ module.exports = function(tweet, cb) {
     console.log(stars);
     updateTweet(finderID, stars, function(err, data) {
       if (err) return console.error(err);
-      console.log(data.rowCount === 1);
-    })
+      // console.log(data.rowCount === 1);
+    });
   }
   if (tweet.coordinates) {
-    console.log(tweet);
+    // console.log(tweet);
+    var date = Date.now().toString();
 
-    newTweetObject = {
+    dbTweet = {
       username: tweet.user.screen_name,
       content: tweet.text,
       longitude: tweet.coordinates.coordinates[0],
       latitude: tweet.coordinates.coordinates[1],
       twitter_id: tweet.id_str,
       location: tweet.user.location,
+      timestamp: date,
       stars: tweet.favorite_count || 0
-    }
-    // console.log(newTweetObject);
+    };
+    // console.log(dbTweet);
   }
 
-  cb(null, newTweetObject);
-}
+  cb(null, dbTweet);
+};
 
 
 // TESTED =========================================
@@ -107,10 +109,11 @@ if(process.argv[1] === __filename) {
     possibly_sensitive: false,
     filter_level: 'medium',
     lang: 'en'
-  }
+  };
 
   module.exports(rawTweet, function(err, data) {
       if(err) return console.error(err);
+      console.log('dbTweet:');
       console.log(data);
   });
 }
