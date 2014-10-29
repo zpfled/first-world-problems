@@ -1,6 +1,6 @@
 // turn tweet json from stream into a js object in the format we want
-
-updateTweet = require('./updateTweet');
+var date = require('../constants/now');
+var updateTweet = require('./updateTweet');
 
 module.exports = function(tweet, cb) {
   var dbTweet = {};
@@ -19,7 +19,6 @@ module.exports = function(tweet, cb) {
   }
   if (tweet.coordinates) {
     // console.log(tweet);
-    var date = Date.now().toString();
 
     dbTweet = {
       username: tweet.user.screen_name,

@@ -1,6 +1,6 @@
 // Handles the whole process of streaming from twitter to the database
 var twitterStream = require('./twitterStream');
-var createTweet = require('./createTweet');
+var createTweet = require('../db/createTweet');
 var objectifyTweet = require('./objectifyTweet');
 var messenger = require('../messenger');
 var stream;

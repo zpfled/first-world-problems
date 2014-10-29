@@ -33,7 +33,7 @@ module.exports = {
     },
     {
       name: 'timestamp',
-      dataType: 'character varying(255)'
+      dataType: 'integer'
     },
     {
       name: 'stars',

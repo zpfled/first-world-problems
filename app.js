@@ -9,9 +9,9 @@ var routes = require('./routes/index');
 var messenger = require('./messenger');
 // Custom Query Functions
 var streamTweetsToClient = require('./tasks/streamTweetsToClient');
-var getAllTweetsFromDB = require('./tasks/getAllTweetsFromDB');
-var getNewTweets = require('./tasks/getNewTweets');
-var getLastTweetID = require('./tasks/getLastTweetID');
+var getAllTweetsFromDB = require('./db/getAllTweetsFromDB');
+var getNewTweets = require('./db/getNewTweets');
+var getLastTweetID = require('./db/getLastTweetID');
 var filterByHashtag = require('./tasks/filterByHashtag')
 // constants and vars
 var TWEET_SENDING_DELAY = 10;
@@ -19,7 +19,7 @@ var initialTweets = [];
 var tweetsToSend = [];
 
 // SET DEFAULT HASHTAG =================================================
-var DEFAULT_HASHTAG = require('./stream/hashtag')
+var DEFAULT_HASHTAG = require('./constants/hashtag')
 var hashtag = DEFAULT_HASHTAG;
 
 // run stream

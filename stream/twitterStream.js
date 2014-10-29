@@ -10,7 +10,7 @@ var T = new Twit({
 });
 
 module.exports = function(hashtag, cb) {
-  hashtag = (typeof hashtag !== 'undefined' ? hashtag : require('./hashtag'));
+  hashtag = (typeof hashtag !== 'undefined' ? hashtag : require('../constants/hashtag'));
   console.log('firing up the Tweet Stream...tracking ' + hashtag);
   var stream = T.stream('statuses/filter', {
     track: hashtag
