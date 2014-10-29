@@ -12,23 +12,24 @@ var streamTweetsToClient = require('./tasks/streamTweetsToClient');
 var getAllTweetsFromDB = require('./db/getAllTweetsFromDB');
 var getNewTweets = require('./db/getNewTweets');
 var getLastTweetID = require('./db/getLastTweetID');
-var filterByHashtag = require('./tasks/filterByHashtag')
+var filterByHashtag = require('./tasks/filterByHashtag');
+var deleteOldTweets = require('./db/deleteOldTweets');
 // constants and vars
 var TWEET_SENDING_DELAY = 10;
 var initialTweets = [];
 var tweetsToSend = [];
 
 // SET DEFAULT HASHTAG =================================================
-var DEFAULT_HASHTAG = require('./constants/hashtag')
+var DEFAULT_HASHTAG = require('./constants/hashtag');
 var hashtag = DEFAULT_HASHTAG;
 
 // run stream
 var stream = require('./stream/twitterStreamToDatabase')();
 
-var app = new express()
-,   http = require('http')
-,   server = http.createServer(app)
-,   io = require('socket.io').listen(server);
+var app = new express(),
+  http = require('http'),
+  server = http.createServer(app),
+  io = require('socket.io').listen(server);
 
 
 // view engine setup
@@ -47,6 +48,7 @@ app.use('/', routes);
 
 // listen for connections from clients
 io.sockets.on('connection', function(client) {
+    deleteOldTweets();
     hashtag = DEFAULT_HASHTAG;
     var lastTweetID = 0;
     console.log('client connected...');
