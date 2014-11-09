@@ -1,5 +1,4 @@
 #firstWorldProblems
-==============
 
 A Node.js app that streams tweets hashtagged with #firstWorldProblems onto a Leaflet.js map, that's searchable with Angular.js. You know, so we can see where all the real suffering in the world is going on.
 
