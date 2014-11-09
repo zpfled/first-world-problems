@@ -28,5 +28,5 @@ if(process.argv[1] === __filename) {
     if(err) return console.error(err);
     console.log(data.rows[0].max[0] === 'z');
     process.reallyExit();
-  })
+  });
 }

@@ -1,6 +1,6 @@
 // update a tweet's stars field with data harvested from a retweet
 
-var dbQuery = require('../tasks/query');
+var dbQuery = require('../db/query');
 var sql = require('sql');
 
 module.exports = function(finderID, stars, cb) {

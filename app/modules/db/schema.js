@@ -32,6 +32,10 @@ module.exports = {
       dataType: 'character varying(255)'
     },
     {
+      name: 'timestamp',
+      dataType: 'integer'
+    },
+    {
       name: 'stars',
       dataType: 'integer'
     }

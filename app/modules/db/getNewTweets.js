@@ -1,6 +1,6 @@
 // Query database for new tweets
 
-var dbQuery = require('./query');
+var dbQuery = require('../db/query');
 var sql = require('sql');
 var getLastTweetID = require('./getLastTweetID')
 var geoTweets;
