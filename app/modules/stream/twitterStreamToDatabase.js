@@ -1,8 +1,13 @@
 // Handles the whole process of streaming from twitter to the database
-var twitterStream = require('./twitterStream');
-var createTweet = require('../db/createTweet');
-var objectifyTweet = require('./objectifyTweet');
-var messenger = require('../messenger');
+// require stream modules
+var twitterStream = require('./twitterStream'),
+  objectifyTweet = require('./objectifyTweet');
+// require dbController
+var dbController = require('../../controllers/dbController'),
+  createTweet = dbController.createTweet;
+// user messenger service
+var messenger = require('../../services/messenger');
+// set stream variable
 var stream;
 
 // custom callbacks
@@ -20,10 +25,6 @@ function createTweetCB(err, data) {
 // exports
 module.exports = function(hashtag) {
   
-  // if (hashtag === '#') {
-  //   hashtag = require('./hashtag');
-  // }
-
   twitterStream(hashtag, function(err, theStream) {
     stream = theStream;
   });

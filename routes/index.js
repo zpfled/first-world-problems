@@ -1,7 +1,5 @@
 var express = require('express');
 var router = express.Router();
-var runStream = require('../stream/twitterStreamToDatabase');
-var placeholder = require('../constants/hashtag');
 
  // GET home page.
 router.get('/', function(req, res) {

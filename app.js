@@ -2,29 +2,42 @@ var express = require('express');
 var path = require('path');
 var port = process.env.PORT || 3888;
 var logger = require('morgan');
-var cookieParser = require('cookie-parser');
+// var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+// 
 var pg = require('pg');
-var routes = require('./routes/index');
-var messenger = require('./messenger');
-// Custom Query Functions
-var streamTweetsToClient = require('./tasks/streamTweetsToClient');
-var getAllTweetsFromDB = require('./db/getAllTweetsFromDB');
-var getNewTweets = require('./db/getNewTweets');
-var getLastTweetID = require('./db/getLastTweetID');
-var filterByHashtag = require('./tasks/filterByHashtag');
-var deleteOldTweets = require('./db/deleteOldTweets');
+var index = require('./routes/index');
+
+// Services
+var messenger = require('./app/services/messenger');
+var streamTweetsToClient = require('./app/services/streamTweetsToClient');
+
+// DB Query Functions
+var dbController = require('./app/controllers/dbController'),
+  getAllTweetsFromDB = dbController.getAllTweetsFromDB,
+  getNewTweets = dbController.getNewTweets,
+  getLastTweetID = dbController.getLastTweetID,
+  deleteOldTweets = dbController.deleteOldTweets;
+console.log('dbController:');
+console.log(dbController);
+
+// Stream Functions
+var streamController = require('./app/controllers/streamController'),
+  objectifyTweet = streamController.objectifyTweet,
+  twitterStreamToDatabase = streamController.twitterStreamToDatabase;
+console.log('streamController:');
+console.log(streamController);
+
 // constants and vars
 var TWEET_SENDING_DELAY = 10;
 var initialTweets = [];
 var tweetsToSend = [];
 
 // SET DEFAULT HASHTAG =================================================
-var DEFAULT_HASHTAG = require('./constants/hashtag');
-var hashtag = DEFAULT_HASHTAG;
+var hashtag = require('./app/modules/constants/hashtag');
 
 // run stream
-var stream = require('./stream/twitterStreamToDatabase')();
+var runStream = twitterStreamToDatabase(hashtag);
 
 var app = new express(),
   http = require('http'),
@@ -33,14 +46,14 @@ var app = new express(),
 
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', path.join(__dirname, 'app/views'));
 app.set('view engine', 'ejs');
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-app.use('/', routes);
+// app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'app/assets')));
+app.use('/', index);
 
 // Server
 
@@ -48,19 +61,22 @@ app.use('/', routes);
 
 // listen for connections from clients
 io.sockets.on('connection', function(client) {
-    deleteOldTweets();
-    hashtag = DEFAULT_HASHTAG;
+
+    // hashtag = DEFAULT_HASHTAG;
     var lastTweetID = 0;
     console.log('client connected...');
 
+    // on connection, delete old tweets from db
+    deleteOldTweets(null, function(err, success) {
+      if(err) return console.error(err);
+      console.log(success);
+    });
+    
     // on connection, get all tweets from db
     getAllTweetsFromDB(null, function(err, results) {
         if(err) return console.error(err);
         console.log('getting all tweets from db...');
         initialTweets = results;
-        filterByHashtag(hashtag, results, function(err, filteredResults) {
-            initialTweets = filteredResults;
-        });
     });
 
     getLastTweetID(function(err, id) {
@@ -79,13 +95,9 @@ io.sockets.on('connection', function(client) {
     client.on('moarTweets', function(id) {
         getNewTweets(null, lastTweetID, function(err, newTweets) {
             if(err) return console.error(err);
-
-            // send filtered tweets to view
-            filterByHashtag(hashtag, newTweets, function(err, filteredResults) {
-                filteredResults.forEach(function(tweet) {
-                    client.emit('sendTweets', tweet);
-                });
-            });
+              newTweets.forEach(function(tweet) {
+                client.emit('sendTweets', tweet);
+              });
 
             // update lastTweetID
             getLastTweetID(function(err, id) {

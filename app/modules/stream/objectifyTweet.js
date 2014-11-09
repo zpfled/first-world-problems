@@ -11,7 +11,7 @@ module.exports = function(tweet, cb) {
     var favorites = tweet.retweeted_status.favorite_count;
     var stars = (retweets + favorites);
     console.log(finderID);
-    console.log(stars);
+    console.log('stars: ' + stars);
     updateTweet(finderID, stars, function(err, data) {
       if (err) return console.error(err);
       // console.log(data.rowCount === 1);

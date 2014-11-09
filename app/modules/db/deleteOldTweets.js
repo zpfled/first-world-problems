@@ -15,8 +15,8 @@ module.exports = function(err, cb) {
     values: [ now, shelfLife ]
   };
 
-  var results = dbQuery(query, function(err, data) {
-    cb(null, data);
+  var results = dbQuery(query, function(err, results) {
+    cb(null, results);
   });
 };
 
@@ -26,7 +26,6 @@ var cleanUp = require('./cleanUpTests');
 var createTweet = require('./createTweet');
 
 if(process.argv[1] === __filename) {
-
 
   var longTimeAgo = (now - 31);
   var stankyOldTweet = {
