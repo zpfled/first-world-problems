@@ -8,6 +8,6 @@ var objectifyTweet = require('../modules/stream/objectifyTweet'),
 module.exports = {
 	objectifyTweet: objectifyTweet,
 	twitterStream: twitterStream,
-	twitterStreamToDatabase: twitterStreamToDatabase,
+	run: twitterStreamToDatabase,
 	updateTweet: updateTweet
 };

@@ -1,86 +1,57 @@
-// require modules
-var express = require('express');
-var path = require('path');
-var port = process.env.PORT || 3888;
-var logger = require('morgan');
-// var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-// 
-var pg = require('pg');
-var index = require('./routes/index');
-
-// Services
-var messenger = require('./app/services/messenger');
-var streamTweetsToClient = require('./app/services/streamTweetsToClient');
-
-// DB Query Functions
-var dbController = require('./app/controllers/dbController'),
-  getAllTweetsFromDB = dbController.getAllTweetsFromDB,
-  getNewTweets = dbController.getNewTweets,
-  getLastTweetID = dbController.getLastTweetID,
-  deleteOldTweets = dbController.deleteOldTweets;
-console.log('dbController:');
-console.log(dbController);
-
-// Stream Functions
-var streamController = require('./app/controllers/streamController'),
-  objectifyTweet = streamController.objectifyTweet,
-  twitterStreamToDatabase = streamController.twitterStreamToDatabase;
-console.log('streamController:');
-console.log(streamController);
-
-// constants and vars
-var TWEET_SENDING_DELAY = 10;
-var initialTweets = [];
-var tweetsToSend = [];
-
-// SET DEFAULT HASHTAG =================================================
-var hashtag = require('./app/modules/constants/hashtag');
-
-// run stream
-var runStream = twitterStreamToDatabase(hashtag);
-
-var app = new express(),
+// Config
+var config = require('./config'),
+  modules = config.modules,
+  constants = config.constants,
+  controllers = config.controllers,
+  services = config.services,
+  // Controllers
+  db = controllers.db,
+  routes = controllers.routes,
+  stream = controllers.stream,
+  // Routes
+  index = routes.index,
+  // Variables
+  tweetsPacket = [],
+  // App
+  app = new modules.express(),
   http = require('http'),
   server = http.createServer(app),
   io = require('socket.io').listen(server);
-
-
-// view engine setup
-app.set('views', path.join(__dirname, 'app/views'));
+  
+// Setup View Engine
+app.set('views', modules.path.join(__dirname, 'app/views'));
 app.set('view engine', 'ejs');
-app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded());
+app.use(modules.logger('dev'));
+app.use(modules.bodyParser.json());
+app.use(modules.bodyParser.urlencoded());
 // app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'app/assets')));
-app.use('/', index);
+app.use(modules.express.static(modules.path.join(__dirname, 'app/assets')));
+app.use('/', routes.index);
 
-// Server
+// Server Process
+// 1. Run stream
+stream.run(constants.hashtag);
 
-// heroku starts the file
-
-// listen for connections from clients
+// 2. Listen for connections from clients
 io.sockets.on('connection', function(client) {
 
-    // hashtag = DEFAULT_HASHTAG;
     var lastTweetID = 0;
     console.log('client connected...');
 
     // on connection, delete old tweets from db
-    deleteOldTweets(null, function(err, success) {
+    db.deleteOldTweets(null, function(err, success) {
       if(err) return console.error(err);
       console.log(success);
     });
     
     // on connection, get all tweets from db
-    getAllTweetsFromDB(null, function(err, results) {
+    db.getAllTweetsFromDB(null, function(err, results) {
         if(err) return console.error(err);
         console.log('getting all tweets from db...');
-        initialTweets = results;
+        tweetsPacket = results;
     });
 
-    getLastTweetID(function(err, id) {
+    db.getLastTweetID(function(err, id) {
         if (err) return console.error(err);
         lastTweetID = id;
     });
@@ -89,19 +60,19 @@ io.sockets.on('connection', function(client) {
     client.on('ready', function() {
         console.log('client ready...');
         // stream initial tweets to client
-        streamTweetsToClient(initialTweets, client, TWEET_SENDING_DELAY);
+        services.streamTweetsToClient(tweetsPacket, client, constants.delay);
     });
 
     // periodically check db for new tweets
     client.on('moarTweets', function(id) {
-        getNewTweets(null, lastTweetID, function(err, newTweets) {
+        db.getNewTweets(null, lastTweetID, function(err, newTweets) {
             if(err) return console.error(err);
               newTweets.forEach(function(tweet) {
                 client.emit('sendTweets', tweet);
               });
 
             // update lastTweetID
-            getLastTweetID(function(err, id) {
+            db.getLastTweetID(function(err, id) {
                 if (err) return console.error(err);
                 lastTweetID = id;
                 client.emit('lastTweet', lastTweetID);
@@ -143,4 +114,4 @@ app.use(function(err, req, res, next) {
     });
 });
 
-server.listen(port);
+server.listen(constants.port);
