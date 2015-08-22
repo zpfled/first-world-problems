@@ -30,11 +30,11 @@ io.sockets.on 'connection', (client) ->
   lastTweetID = 0
   console.log 'client connected...'
   # on connection, delete old tweets from db
-  db.deleteOldTweets null, (err, success) ->
-    if err
-      return console.error(err)
-    console.log success
-    return
+  # db.deleteOldTweets null, (err, success) ->
+  #   if err
+  #     return console.error(err)
+  #   console.log success
+  #   return
   # on connection, get all tweets from db
   db.getAllTweetsFromDB null, (err, results) ->
     if err
