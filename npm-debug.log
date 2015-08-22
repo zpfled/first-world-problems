@@ -8,7 +8,7 @@
 7 verbose unsafe-perm in lifecycle true
 8 info firstworldproblems@0.0.1 Failed to exec start script
 9 error firstworldproblems@0.0.1 start: `coffee app.coffee`
-9 error Exit status 127
+9 error Exit status 1
 10 error Failed at the firstworldproblems@0.0.1 start script.
 10 error This is most likely a problem with the firstworldproblems package,
 10 error not with npm itself.

@@ -16,7 +16,8 @@ module.exports =
   controllers:
     db: require('./app/controllers/dbController')
     stream: require('./app/controllers/streamController')
-    routes: require('./app/controllers/routesController')
+    routes:
+      pages: require('./app/controllers/pages_controller')
   services:
     messenger: require('./app/services/messenger')
     streamTweetsToClient: require('./app/services/streamTweetsToClient')

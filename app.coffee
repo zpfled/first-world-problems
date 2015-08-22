@@ -5,9 +5,8 @@ constants = config.constants
 controllers = config.controllers
 services = config.services
 db = controllers.db
-routes = controllers.routes
+pages_controller = controllers.routes.pages
 stream = controllers.stream
-index = routes.index
 tweetsPacket = []
 app = new (modules.express)
 http = require('http')
@@ -21,7 +20,7 @@ app.use modules.bodyParser.json()
 app.use modules.bodyParser.urlencoded()
 # app.use(cookieParser());
 app.use modules.express.static(modules.path.join(__dirname, 'app/assets'))
-app.use '/', routes.index
+app.use '/', pages_controller
 # Server Process
 # 1. Run stream
 stream.run constants.hashtag
