@@ -1,5 +1,9 @@
-# Config
+# Load Dependencies
 config = require('./config')
+http = require('http')
+io = require('socket.io').listen(server)
+
+# Set Variables
 modules = config.modules
 constants = config.constants
 controllers = config.controllers
@@ -8,19 +12,22 @@ db = controllers.db
 pages_controller = controllers.routes.pages
 stream = controllers.stream
 tweetsPacket = []
+
+# Setup App
 app = new (modules.express)
-http = require('http')
 server = http.createServer(app)
-io = require('socket.io').listen(server)
+
 # Setup View Engine
 app.set 'views', modules.path.join(__dirname, 'app/views')
 app.set 'view engine', 'ejs'
 app.use modules.logger('dev')
 app.use modules.bodyParser.json()
 app.use modules.bodyParser.urlencoded()
-# app.use(cookieParser());
 app.use modules.express.static(modules.path.join(__dirname, 'app/assets'))
+
+# Routes Config
 app.use '/', pages_controller
+
 # Server Process
 # 1. Run stream
 stream.run constants.hashtag

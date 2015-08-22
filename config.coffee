@@ -1,4 +1,3 @@
-# cookieParser = require('cookie-parser');
 # export config object
 module.exports =
   modules:
