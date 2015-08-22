@@ -1,17 +1,14 @@
 # Handles the whole process of streaming from twitter to the database
-# require stream modules
-twitterStream = require('./twitterStream')
+
+# Dependencies
+twitter_stream = require('./twitter_stream')
 objectifyTweet = require('./objectifyTweet')
-# require dbController
+# deprecated
 dbController = require('../../controllers/dbController')
 createTweet = dbController.createTweet
-# user messenger service
 messenger = require('../../services/messenger')
-# set stream variable
-stream = undefined
-# exports
-# custom callbacks
 
+# deprecated
 objectifyCB = (err, tweetObject) ->
   if err
     return console.error(err)
@@ -19,19 +16,14 @@ objectifyCB = (err, tweetObject) ->
     createTweet tweetObject, createTweetCB
   return
 
+# deprecated
 createTweetCB = (err, data) ->
   console.log data
   return
 
-module.exports = (hashtag) ->
-  twitterStream hashtag, (err, theStream) ->
-    stream = theStream
-    return
-  stream.on 'tweet', (tweet) ->
+# Return a function that, when called, starts streaming tweets to the DB
+module.exports = ->
+  twitter_stream.start()
+  twitter_stream.on 'tweet', (tweet) ->
     objectifyTweet tweet, objectifyCB
     return
-  # memory leak risk
-  messenger.on 'destroy', ->
-    stream.stop()
-    return
-  return

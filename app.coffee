@@ -30,7 +30,7 @@ app.use '/', pages_controller
 
 # Server Process
 # 1. Run stream
-stream.run constants.hashtag
+stream.run()
 # 2. Listen for connections from clients
 io.sockets.on 'connection', (client) ->
   lastTweetID = 0

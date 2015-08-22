@@ -1,11 +1,11 @@
 # Set variables
 objectifyTweet = require('../modules/stream/objectifyTweet')
-twitterStream = require('../modules/stream/twitterStream')
+twitter_stream = require('../modules/stream/twitter_stream')
 twitterStreamToDatabase = require('../modules/stream/twitterStreamToDatabase')
 updateTweet = require('../modules/stream/updateTweet')
 # Export object containing all stream modules
 module.exports =
   objectifyTweet: objectifyTweet
-  twitterStream: twitterStream
+  twitter_stream: twitter_stream
   run: twitterStreamToDatabase
   updateTweet: updateTweet
