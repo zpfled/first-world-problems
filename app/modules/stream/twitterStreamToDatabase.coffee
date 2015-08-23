@@ -13,7 +13,9 @@ objectifyCB = (err, tweetObject) ->
   if err
     return console.error(err)
   if tweetObject.username
-    createTweet tweetObject, createTweetCB
+    # createTweet tweetObject, createTweetCB
+    console.log tweetObject
+    tweetObject.save()
   return
 
 # deprecated

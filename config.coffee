@@ -8,9 +8,8 @@ module.exports =
     pg: require('pg')
   constants:
     delay: require('./app/modules/constants/delay')
-    # hashtag: require('./app/modules/constants/hashtag')
     now: require('./app/modules/constants/now')
-    port: process.env.PORT or 3888
+    port: process.env.PORT or 8000
     tweetShelfLife: require('./app/modules/constants/tweetShelfLife')
   controllers:
     db: require('./app/controllers/dbController')

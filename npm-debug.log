@@ -1,72 +1,26 @@
 0 info it worked if it ends with ok
-1 verbose cli [ 'node', '/usr/local/bin/npm', 'install', '--save', 'momentjs' ]
+1 verbose cli [ 'node', '/usr/local/bin/npm', 'start' ]
 2 info using npm@1.4.28
 3 info using node@v0.10.33
-4 warn package.json events@1.0.1 events is also the name of a node core module.
-5 warn package.json http@0.0.0 http is also the name of a node core module.
-6 warn package.json http@0.0.0 No description
-7 warn package.json http@0.0.0 No repository field.
-8 verbose readDependencies using package.json deps
-9 verbose cache add [ 'momentjs', null ]
-10 verbose cache add name=undefined spec="momentjs" args=["momentjs",null]
-11 verbose parsed url { protocol: null,
-11 verbose parsed url   slashes: null,
-11 verbose parsed url   auth: null,
-11 verbose parsed url   host: null,
-11 verbose parsed url   port: null,
-11 verbose parsed url   hostname: null,
-11 verbose parsed url   hash: null,
-11 verbose parsed url   search: null,
-11 verbose parsed url   query: null,
-11 verbose parsed url   pathname: 'momentjs',
-11 verbose parsed url   path: 'momentjs',
-11 verbose parsed url   href: 'momentjs' }
-12 silly lockFile 6617700a-momentjs momentjs
-13 verbose lock momentjs /Users/zachpflederer/.npm/6617700a-momentjs.lock
-14 silly lockFile 6617700a-momentjs momentjs
-15 silly lockFile 6617700a-momentjs momentjs
-16 verbose addNamed [ 'momentjs', '' ]
-17 verbose addNamed [ null, '*' ]
-18 silly lockFile 04d76c48-momentjs momentjs@
-19 verbose lock momentjs@ /Users/zachpflederer/.npm/04d76c48-momentjs.lock
-20 silly addNameRange { name: 'momentjs', range: '*', hasData: false }
-21 verbose request where is /momentjs
-22 verbose request registry https://registry.npmjs.org/
-23 verbose request id c42db67452f92afc
-24 verbose url raw /momentjs
-25 verbose url resolving [ 'https://registry.npmjs.org/', './momentjs' ]
-26 verbose url resolved https://registry.npmjs.org/momentjs
-27 verbose request where is https://registry.npmjs.org/momentjs
-28 info trying registry request attempt 1 at 15:53:52
-29 http GET https://registry.npmjs.org/momentjs
-30 http 404 https://registry.npmjs.org/momentjs
-31 silly registry.get cb [ 404,
-31 silly registry.get   { 'content-type': 'application/json',
-31 silly registry.get     'cache-control': 'max-age=0',
-31 silly registry.get     'content-length': '2',
-31 silly registry.get     'accept-ranges': 'bytes',
-31 silly registry.get     date: 'Sat, 22 Aug 2015 20:53:51 GMT',
-31 silly registry.get     via: '1.1 varnish',
-31 silly registry.get     age: '0',
-31 silly registry.get     connection: 'keep-alive',
-31 silly registry.get     'x-served-by': 'cache-ord1723-ORD',
-31 silly registry.get     'x-cache': 'MISS',
-31 silly registry.get     'x-cache-hits': '0',
-31 silly registry.get     'x-timer': 'S1440276831.717258,VS0,VE156' } ]
-32 silly lockFile 04d76c48-momentjs momentjs@
-33 silly lockFile 04d76c48-momentjs momentjs@
-34 error 404 Not Found
-34 error 404
-34 error 404 'momentjs' is not in the npm registry.
-34 error 404 You should bug the author to publish it
-34 error 404 It was specified as a dependency of 'firstworldproblems'
-34 error 404
-34 error 404 Note that you can also install from a
-34 error 404 tarball, folder, or http url, or git url.
-35 error System Darwin 14.4.0
-36 error command "node" "/usr/local/bin/npm" "install" "--save" "momentjs"
-37 error cwd /Users/zachpflederer/first-world-problems
-38 error node -v v0.10.33
-39 error npm -v 1.4.28
-40 error code E404
-41 verbose exit [ 1, true ]
+4 verbose run-script [ 'prestart', 'start', 'poststart' ]
+5 info prestart firstworldproblems@0.0.1
+6 info start firstworldproblems@0.0.1
+7 verbose unsafe-perm in lifecycle true
+8 info firstworldproblems@0.0.1 Failed to exec start script
+9 error firstworldproblems@0.0.1 start: `coffee app.coffee`
+9 error Exit status 8
+10 error Failed at the firstworldproblems@0.0.1 start script.
+10 error This is most likely a problem with the firstworldproblems package,
+10 error not with npm itself.
+10 error Tell the author that this fails on your system:
+10 error     coffee app.coffee
+10 error You can get their info via:
+10 error     npm owner ls firstworldproblems
+10 error There is likely additional logging output above.
+11 error System Darwin 14.4.0
+12 error command "node" "/usr/local/bin/npm" "start"
+13 error cwd /Users/zachpflederer/first-world-problems
+14 error node -v v0.10.33
+15 error npm -v 1.4.28
+16 error code ELIFECYCLE
+17 verbose exit [ 1, true ]

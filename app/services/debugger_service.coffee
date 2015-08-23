@@ -1,5 +1,5 @@
 # Dependencies
-Environment = require('/app/services/environment_service')
+Environment = require('./environment_service')
 
 # Debugger Service
 module.exports = ->

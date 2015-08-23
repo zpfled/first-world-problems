@@ -1,5 +1,5 @@
 # Query database for new tweets
-dbQuery = require('../db/query')
+dbQuery = require('../../services/sql_query_service')
 sql = require('sql')
 getLastTweetID = require('./getLastTweetID')
 geoTweets = undefined

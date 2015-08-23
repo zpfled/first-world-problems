@@ -102,4 +102,5 @@ app.use (err, req, res, next) ->
     message: err.message
     error: {}
   return
-server.listen constants.port
+
+server.listen(constants.port)

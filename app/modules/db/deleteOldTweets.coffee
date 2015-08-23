@@ -1,8 +1,7 @@
 # Delete old tweets from db
-dbQuery = require('./query')
+dbQuery = require('../../services/sql_query_service')
 sql = require('sql')
 getLastTweetID = require('./getLastTweetID')
-geoTweets = undefined
 now = require('../constants/now')
 shelfLife = require('../constants/tweetShelfLife')
 
@@ -20,29 +19,3 @@ module.exports = (err, cb) ->
     return
   )
   return
-
-# TESTED ===========================================
-cleanUp = require('./cleanUpTests')
-createTweet = require('./createTweet')
-if process.argv[1] == __filename
-  longTimeAgo = now - 31
-  stankyOldTweet =
-    username: 'test'
-    content: 'so old and stanky'
-    longitude: 1
-    latitude: 1
-    twitter_id: '492834573244325889'
-    location: 'test'
-    timestamp: longTimeAgo
-    stars: 0
-  createTweet stankyOldTweet, (err, data) ->
-    if err
-      return console.error(err)
-    if data == 'tweet created'
-      module.exports null, (err, data) ->
-        if err
-          return console.error(err)
-        console.log data.rowCount == 1
-        process.reallyExit()
-        return
-    return

@@ -3,8 +3,6 @@
 if module.parent
   throw 'DON\'T YOLO THE DATABASE!'
 sql = require('sql')
-tweetTable = require('./schema')
-tweets = sql.define(
-  name: tweetTable.name
-  columns: tweetTable.columns)
+Tweet = require('../../models/tweet')
+tweets = sql.define(Tweet.schema())
 console.log tweets.create().toQuery().text

@@ -3,7 +3,7 @@ dbQuery = require('../db/query')
 sql = require('sql')
 
 module.exports = (finderID, stars, cb) ->
-  `var sql`
+  # `var sql`
   sql =
     text: 'UPDATE "tweets" SET "stars" = $1 WHERE "tweets"."twitter_id" = $2'
     values: [
