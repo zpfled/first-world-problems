@@ -4,7 +4,7 @@ module.exports = (Tweets, Client, Delay) ->
   (->
     if Tweets.length
       Client.emit 'sendTweets', Tweets.pop()
-      setTimeout streamRemainingTweets, Delay
+      # setTimeout streamRemainingTweets, Delay
     return
   )()
   return

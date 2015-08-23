@@ -1,5 +1,5 @@
 # return an Integer equal to id of last tweet in db
-dbQuery = require('./query')
+dbQuery = require('../../services/sql_query_service')
 sql = require('sql')
 lastTweet = undefined
 

@@ -1,4 +1,3 @@
-# cookieParser = require('cookie-parser');
 # export config object
 module.exports =
   modules:
@@ -9,14 +8,14 @@ module.exports =
     pg: require('pg')
   constants:
     delay: require('./app/modules/constants/delay')
-    hashtag: require('./app/modules/constants/hashtag')
     now: require('./app/modules/constants/now')
-    port: process.env.PORT or 3888
+    port: process.env.PORT or 8000
     tweetShelfLife: require('./app/modules/constants/tweetShelfLife')
   controllers:
     db: require('./app/controllers/dbController')
     stream: require('./app/controllers/streamController')
-    routes: require('./app/controllers/routesController')
+    routes:
+      pages: require('./app/controllers/pages_controller')
   services:
     messenger: require('./app/services/messenger')
     streamTweetsToClient: require('./app/services/streamTweetsToClient')
